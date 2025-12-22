@@ -26,8 +26,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='16' height='16' rx='2' ry='2'%3E%3C/rect%3E%3Crect x='9' y='9' width='6' height='6'%3E%3C/rect%3E%3Cline x1='9' y1='1' x2='9' y2='4'%3E%3C/line%3E%3Cline x1='15' y1='1' x2='15' y2='4'%3E%3C/line%3E%3Cline x1='9' y1='20' x2='9' y2='23'%3E%3C/line%3E%3Cline x1='15' y1='20' x2='15' y2='23'%3E%3C/line%3E%3Cline x1='20' y1='9' x2='23' y2='9'%3E%3C/line%3E%3Cline x1='20' y1='14' x2='23' y2='14'%3E%3C/line%3E%3Cline x1='1' y1='9' x2='4' y2='9'%3E%3C/line%3E%3Cline x1='1' y1='14' x2='4' y2='14'%3E%3C/line%3E%3C/svg%3E">
+    <!-- Favicon thx alky -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='16' height='16' rx='2' ry='2'%3E%3C/rect%3E%3Crect x='9' y='9' width='6' height='6'%3E%3C/rect%3E%3Cline x1='9' y1='1' x2='9' y2='4'%3E%3C/line%3E%3Cline x1='15' y1='1' x2='15' y2='4'%3E%3C/line%3E%3Cline x1='9' y1='20' x2='9' y2='23'%3E%3C/line%3E%3Cline x1='15' y1='20' x2='15' y2='23'%3E%3C/line%3E%3Cline x1='20' y1='9' x2='23' y2='9'%3E%3C/line%3E%3Cline x1='20' y1='14' x2='23' y2='14'%3E%3C/line%3E%3Cline x1='1' y1='9' x2='4' y2='9'%3E%3C/line%3E%3Cline x1='1' y1='14' x2='4' y2='14'%3E%3C/line%3E%3C/svg%3E">
     
     <style>
         :root {
@@ -41,7 +41,7 @@
             font-family: 'Inter', sans-serif;
             color: #e2e8f0;
             background-color: #000;
-            /* Firefox Scrollbar Support */
+            /* Firefox Scrollbar Support ooof*/
             scrollbar-width: thin;
             scrollbar-color: #4c1d95 #050505;
         }
@@ -69,13 +69,13 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             transition: border-color 0.3s ease, transform 0.3s ease;
-            /* content-visibility speeds up initial load by not rendering off-screen content */
+            /* content-visibility speeds */
             content-visibility: auto; 
-            contain-intrinsic-size: 1px 500px; /* Estimate height to prevent scrollbar jumping */
+            contain-intrinsic-size: 1px 500px; /* Fix scroll bar jumping */
         }
 
         .glass-header {
-            background: rgba(5, 5, 8, 0.9);
+            background: rgba(5, 5, 8, 0.6);
             /* Keep blur ONLY on header for effect, reduced radius */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -121,49 +121,36 @@
         .pulse-glow {
             animation: pulse-glow 2s infinite;
         }
-
         /* Glitch Effect for Title */
         .glitch-hover {
             position: relative;
+            transition: letter-spacing 0.5s cubic-bezier(0.2, 0, 0.2, 1), filter 0.5s ease;
         }
-        .glitch-hover:hover::before,
-        .glitch-hover:hover::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-        }
-        .glitch-hover:hover::before {
-            left: 2px;
-            text-shadow: -1px 0 #00ffff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim-1 2s infinite linear alternate-reverse;
-        }
-        .glitch-hover:hover::after {
-            left: -2px;
-            text-shadow: -1px 0 #ff00ff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        
+        .glitch-hover:hover {
+            letter-spacing: 0.1em; /* Smooth expansion */
+            /* Enhanced glow and brightness instead of tearing */
+            filter: drop-shadow(0 0 20px rgba(192, 132, 252, 0.6)) brightness(1.3); 
         }
 
-        @keyframes glitch-anim-1 {
-            0% { clip: rect(30px, 9999px, 10px, 0); }
-            20% { clip: rect(80px, 9999px, 90px, 0); }
-            40% { clip: rect(10px, 9999px, 50px, 0); }
-            60% { clip: rect(40px, 9999px, 20px, 0); }
-            80% { clip: rect(70px, 9999px, 30px, 0); }
-            100% { clip: rect(20px, 9999px, 60px, 0); }
+        /* Sleek underline scanner effect */
+        .glitch-hover::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c084fc, transparent);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease;
+            opacity: 0;
         }
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(15px, 9999px, 85px, 0); }
-            20% { clip: rect(65px, 9999px, 25px, 0); }
-            40% { clip: rect(95px, 9999px, 5px, 0); }
-            60% { clip: rect(5px, 9999px, 55px, 0); }
-            80% { clip: rect(35px, 9999px, 95px, 0); }
-            100% { clip: rect(55px, 9999px, 15px, 0); }
+
+        .glitch-hover:hover::after {
+            transform: scaleX(1.2);
+            opacity: 1;
         }
 
         /* Lightbox */
@@ -207,12 +194,13 @@
 
     <!-- Background Video Container -->
     <div class="fixed inset-0 z-[-1] overflow-hidden bg-black transform-gpu">
-        <video autoplay loop muted playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='black'/%3E%3C/svg%3E" class="absolute w-full h-full object-cover opacity-50">
+        <video autoplay loop muted playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='black'/%3E%3C/svg%3E" class="absolute w-full h-full object-cover opacity-70">
             <source src="./vid/raiden.mp4" type="video/mp4">
         </video>
         <!-- Overlay gradient to ensure text readability -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent"></div>
-        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+        <!-- Reduced overlay opacity to let more video through -->
+        <div class="absolute inset-0 bg-black/20"></div>
     </div>
 
     <!-- Navigation -->
@@ -220,8 +208,16 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
-                <div class="flex items-center gap-4">
-                    <div class="w-2 h-8 bg-violet-600 rounded-full shadow-[0_0_15px_rgba(139,92,246,0.6)]"></div>
+                <div class="flex items-center gap-3">
+                    <!-- Custom Chip SVG Logo -->
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-violet-600 blur-md opacity-40 group-hover:opacity-60 transition-opacity rounded-full"></div>
+                        <svg class="w-8 h-8 text-violet-500 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
+                        </svg>
+                    </div>
                     <span class="font-bold text-white tracking-wide text-lg">PROJECT <span class="text-violet-400">STELLA</span></span>
                 </div>
 
@@ -263,7 +259,10 @@
     <main class="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-24">
 
         <!-- Hero Section -->
-        <header id="home" class="text-center py-20 reveal">
+        <header id="home" class="text-center py-20 reveal relative">
+            <!-- Ambient Glow Effect to break up the black -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+            
             <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">
                 <span class="block text-xl md:text-2xl font-mono font-normal text-violet-400 mb-4 tracking-wider">research_log_01 //</span>
                 HP Pavilion <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 text-glow glitch-hover" data-text="BIOS Unlock">BIOS Unlock</span>
