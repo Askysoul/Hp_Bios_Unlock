@@ -53,7 +53,7 @@ To unhide the **Advanced** and **Chipset**  BIOS tabs to access:
 
 ## C3: BIOS Modifications Attempted
 
-These changes I before seeking help:
+These changes I did before seeking help:
 
 | Setting | Action Taken |
 |---------|--------------|
@@ -167,7 +167,7 @@ Extracted IFR section showing the menu suppression:
 | False | **47 02** | Boolean constant FALSE (never suppress) |
 | End | 29 02 | End of block |
 
-**FK HP:** The suppression is NOT based on any variable check. It's a hardcoded constant.
+**F HP:** The suppression is NOT based on any variable check. It's a hardcoded constant.
 
 ---
 
@@ -708,7 +708,7 @@ Options: Disabled (0x0, default), Enabled (0x1)
 6. Used a tool UEFIVAR from zibri(virustotal 5/65) seems like malware might be wrong 
     [zibri - its just statistics nothing malicious when users complained i hope so]
 
-**Final Status:** FK HP
+**Final Status:** F HP
 
 **Future Goal**
 1. Pin mod (REALTEK - ALC 3315)
