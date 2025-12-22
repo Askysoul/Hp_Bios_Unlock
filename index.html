@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HP Pavilion BIOS Unlock | Research Documentation</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Detailed research documentation on unlocking HP Pavilion BIOS hidden menus. Analysis of AMI Aptio V firmware, suppression opcodes, and hardware protections (PRR/Error 167).">
+    <meta name="keywords" content="HP Pavilion, BIOS Unlock, AMI Aptio V, Overclocking, Undervolting, Reverse Engineering, UEFI, IFR Dump, FPTw64">
+    <meta name="author" content="Project Stella">
+    <meta name="theme-color" content="#7c3aed">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="HP Pavilion BIOS Unlock | Research Documentation">
+    <meta property="og:description" content="Detailed analysis of hidden BIOS menus, suppression mechanisms, and failed exploitation attempts on Intel Comet Lake.">
+    <meta property="og:image" content="https://ui-avatars.com/api/?name=BIOS+Unlock&background=000&color=8b5cf6&size=512">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="HP Pavilion BIOS Unlock | Research Documentation">
+    <meta property="twitter:description" content="Detailed analysis of hidden BIOS menus, suppression mechanisms, and failed exploitation attempts on Intel Comet Lake.">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    
+    <style>
+        :root {
+            /* Optimized: Darker background, less reliance on heavy blur mixing */
+            --glass-bg: rgba(10, 10, 14, 0.85); 
+            --glass-border: rgba(139, 92, 246, 0.2);
+            --accent-glow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #e2e8f0;
+            background-color: #000;
+            /* Firefox Scrollbar Support */
+            scrollbar-width: thin;
+            scrollbar-color: #4c1d95 #050505;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Scrollbar (Webkit) */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d95;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6d28d9;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            /* content-visibility speeds up initial load by not rendering off-screen content */
+            content-visibility: auto; 
+            contain-intrinsic-size: 1px 500px; /* Estimate height to prevent scrollbar jumping */
+        }
+
+        .glass-header {
+            background: rgba(5, 5, 8, 0.9);
+            /* Keep blur ONLY on header for effect, reduced radius */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Utilities */
+        .text-glow {
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Simplified reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Terminal Cursor Blink */
+        .cursor-blink::after {
+            content: '▋';
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+            color: #8b5cf6;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Pulse Glow Animation */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(139,92,246,0.5); }
+            50% { box-shadow: 0 0 25px rgba(139,92,246,0.9); }
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* Glitch Effect for Title */
+        .glitch-hover {
+            position: relative;
+        }
+        .glitch-hover:hover::before,
+        .glitch-hover:hover::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+        .glitch-hover:hover::before {
+            left: 2px;
+            text-shadow: -1px 0 #00ffff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+        .glitch-hover:hover::after {
+            left: -2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            20% { clip: rect(80px, 9999px, 90px, 0); }
+            40% { clip: rect(10px, 9999px, 50px, 0); }
+            60% { clip: rect(40px, 9999px, 20px, 0); }
+            80% { clip: rect(70px, 9999px, 30px, 0); }
+            100% { clip: rect(20px, 9999px, 60px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(15px, 9999px, 85px, 0); }
+            20% { clip: rect(65px, 9999px, 25px, 0); }
+            40% { clip: rect(95px, 9999px, 5px, 0); }
+            60% { clip: rect(5px, 9999px, 55px, 0); }
+            80% { clip: rect(35px, 9999px, 95px, 0); }
+            100% { clip: rect(55px, 9999px, 15px, 0); }
+        }
+
+        /* Lightbox */
+        #lightbox {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            will-change: opacity;
+        }
+        #lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Mobile Menu Transition */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(-20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-violet-600 selection:text-white">
+
+    <!-- Background Video Container -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden bg-black transform-gpu">
+        <video autoplay loop muted playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' fill='black'/%3E%3C/svg%3E" class="absolute w-full h-full object-cover opacity-50">
+            <source src="./vid/raiden.mp4" type="video/mp4">
+        </video>
+        <!-- Overlay gradient to ensure text readability -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent"></div>
+        <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-header">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-4">
+                    <div class="w-2 h-8 bg-violet-600 rounded-full shadow-[0_0_15px_rgba(139,92,246,0.6)]"></div>
+                    <span class="font-bold text-white tracking-wide text-lg">PROJECT <span class="text-violet-400">STELLA</span></span>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#specs" class="nav-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest">Specs</a>
+                    <a href="#mods" class="nav-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest">Mods</a>
+                    <a href="#analysis" class="nav-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest">Deep Dive</a>
+                    <a href="#gallery" class="nav-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest">Evidence</a>
+                    <a href="#conclusion" class="nav-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest">TL;DR</a>
+                </div>
+
+                <!-- GitHub & Mobile Toggle -->
+                <div class="flex items-center gap-4">
+                    <a href="https://github.com/Askysoul" target="_blank" class="text-slate-400 hover:text-white transition-colors hidden md:block" aria-label="GitHub Repository">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <!-- Mobile Hamburger -->
+                    <button id="menu-btn" class="md:hidden text-slate-300 hover:text-white focus:outline-none" aria-label="Toggle Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="absolute top-16 left-0 w-full glass-panel border-x-0 border-t-0 border-b border-slate-800 md:hidden bg-black">
+            <div class="flex flex-col px-6 py-4 space-y-4">
+                <a href="#specs" class="mobile-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest block py-2 border-b border-slate-800/50">Specs</a>
+                <a href="#mods" class="mobile-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest block py-2 border-b border-slate-800/50">Mods</a>
+                <a href="#analysis" class="mobile-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest block py-2 border-b border-slate-800/50">Deep Dive</a>
+                <a href="#gallery" class="mobile-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest block py-2 border-b border-slate-800/50">Evidence</a>
+                <a href="#conclusion" class="mobile-link text-sm font-medium text-slate-400 hover:text-violet-300 transition-colors uppercase tracking-widest block py-2">TL;DR</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-24">
+
+        <!-- Hero Section -->
+        <header id="home" class="text-center py-20 reveal">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">
+                <span class="block text-xl md:text-2xl font-mono font-normal text-violet-400 mb-4 tracking-wider">research_log_01 //</span>
+                HP Pavilion <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-500 text-glow glitch-hover" data-text="BIOS Unlock">BIOS Unlock</span>
+            </h1>
+            <p class="mt-6 max-w-2xl mx-auto text-xl text-slate-300 leading-relaxed font-light">
+                Documentation of security mechanisms, hardcoded suppressions, and failed exploitation attempts on the Intel Comet Lake platform.
+            </p>
+            <div class="mt-10 flex justify-center gap-4">
+                <a href="#analysis" class="px-8 py-3 bg-violet-600/20 border border-violet-500/50 hover:bg-violet-600/40 text-violet-200 rounded font-mono text-sm transition-all shadow-[0_0_15px_rgba(139,92,246,0.2)] hover:shadow-[0_0_25px_rgba(139,92,246,0.4)]">
+                    INITIATE_DIVE
+                </a>
+            </div>
+        </header>
+
+        <!-- Specs & Objective -->
+        <section id="specs" class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal">
+            <div class="glass-panel rounded-xl p-8 hover:border-violet-500/40">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3 font-mono">
+                    <span class="text-violet-500">01.</span> TARGET_SYSTEM
+                </h3>
+                <div class="overflow-hidden rounded-lg border border-slate-700/50">
+                    <table class="w-full text-left text-sm text-slate-400">
+                        <tbody class="divide-y divide-slate-800/50 bg-black/40">
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 font-medium text-slate-200">Platform</td><td class="px-6 py-4">Intel Comet Lake (LPC: 68D)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 font-medium text-slate-200">Flash Chip</td><td class="px-6 py-4">GigaDevice GD25B128C (16MB)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 font-medium text-slate-200">Chip ID</td><td class="px-6 py-4 font-mono text-violet-400">0xC84018</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 font-medium text-slate-200">BIOS Type</td><td class="px-6 py-4">AMI Aptio V UEFI (HP Custom)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 font-medium text-slate-200">ME Version</td><td class="px-6 py-4">14.1, Build 2287, Hot Fix 72</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 font-medium text-slate-200">Revision</td><td class="px-6 py-4">F.31</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-xl p-8 hover:border-violet-500/40 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3 font-mono">
+                        <span class="text-violet-500">02.</span> PRIMARY_OBJECTIVE
+                    </h3>
+                    <p class="text-slate-300 mb-6">Unhide <strong class="text-white">Advanced</strong> and <strong class="text-white">Chipset</strong> tabs to access critical tuning parameters.</p>
+                    <div class="grid grid-cols-2 gap-4 text-xs font-mono text-slate-400">
+                        <div class="bg-black/40 p-3 rounded border border-slate-800">CPU Configuration</div>
+                        <div class="bg-black/40 p-3 rounded border border-slate-800">Thermal Config</div>
+                        <div class="bg-black/40 p-3 rounded border border-slate-800">Memory Timings</div>
+                        <div class="bg-black/40 p-3 rounded border border-slate-800">Overclocking Perf.</div>
+                        <div class="bg-black/40 p-3 rounded border border-slate-800">Power & Performance</div>
+                        <div class="bg-black/40 p-3 rounded border border-slate-800">Debug Settings</div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-800">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500 font-mono text-xs uppercase tracking-widest">MPM STATUS</span>
+                        <span class="text-green-400 font-mono font-bold bg-green-400/10 px-3 py-1 rounded border border-green-400/20">UNLOCKED (0x1)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Grid -->
+        <section class="reveal">
+            <div class="glass-panel rounded-xl p-6">
+                <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-4 border-b border-slate-800 pb-2">Tools Deployed</span>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">RU.EFI</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">FPTw64.exe</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">UEFITool</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">IFR Extractor</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">modGRUBShell</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">setup_var_cv</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">HP BCU</span>
+                    <span class="px-3 py-1.5 bg-violet-900/20 border border-violet-500/30 rounded text-violet-300 font-mono text-xs">HxD</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modifications Table -->
+        <section id="mods" class="reveal">
+            <h2 class="text-3xl font-bold text-white mb-8 tracking-tight">Modification Log</h2>
+            <div class="glass-panel rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-black/60 text-slate-400 uppercase text-xs font-bold tracking-wider">
+                            <tr>
+                                <th class="px-6 py-5 font-mono">Setting</th>
+                                <th class="px-6 py-5 font-mono">Action</th>
+                                <th class="px-6 py-5 font-mono">Outcome</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/50 text-slate-300 font-mono text-xs">
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 text-white">Overclocking Lock</td><td class="px-6 py-4 text-violet-300">Disabled</td><td class="px-6 py-4 text-green-400">Success (Persists)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 text-white">CFG Lock</td><td class="px-6 py-4 text-violet-300">Disabled</td><td class="px-6 py-4 text-green-400">Success (Persists)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4 text-white">OC Perf. Menu</td><td class="px-6 py-4 text-violet-300">Enabled</td><td class="px-6 py-4 text-green-400">Persists (Invisible)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4">Bios Lock</td><td class="px-6 py-4 text-violet-300">Disabled (0x00)</td><td class="px-6 py-4 text-green-400">Persists (Ignored)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4">System Access</td><td class="px-6 py-4 text-violet-300">Set to 0x01</td><td class="px-6 py-4 text-red-400">Reverts on Reboot</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4">ME FW Reflash</td><td class="px-6 py-4 text-violet-300">Enabled</td><td class="px-6 py-4 text-red-400">Reverts on Reboot</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4">FPRR Protection</td><td class="px-6 py-4 text-violet-300">Disabled</td><td class="px-6 py-4 text-green-400">Persists (Ignored)</td></tr>
+                            <tr class="hover:bg-violet-900/10"><td class="px-6 py-4">Serial Bus Controller</td><td class="px-6 py-4 text-violet-300">Offset 0xDC = 88</td><td class="px-6 py-4 text-red-500 font-bold">Write Protected</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deep Dive Analysis -->
+        <section id="analysis" class="space-y-12 reveal">
+            <div>
+                <h2 class="text-3xl font-bold text-white mb-6">Deep Dive Analysis</h2>
+                <div class="glass-panel rounded-xl p-8 border-l-4 border-l-violet-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <p class="text-slate-300 text-lg leading-relaxed max-w-3xl">
+                        Analysis of the Setup IFR revealed why typical variable edits failed. HP utilizes hardcoded suppression opcodes rather than variable checks for the top-level menus.
+                    </p>
+                    <a href="./Section_PE32_image_Setup_Setup.sct.0.0.en-US.uefi.ifr.txt" target="_blank" class="shrink-0 px-4 py-2 bg-violet-600/20 border border-violet-500/50 hover:bg-violet-600/40 text-violet-200 rounded font-mono text-xs transition-all flex items-center gap-2 group shadow-[0_0_10px_rgba(139,92,246,0.2)]">
+                        <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        VIEW FULL IFR DUMP
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <!-- Code Panel -->
+                <div class="glass-panel rounded-xl overflow-hidden flex flex-col h-full">
+                    <div class="bg-black/60 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                        <span class="text-xs font-mono text-slate-500">Section_PE32_image_Setup_Setup.sct.0.0.en-US.uefi.ifr.txt</span>
+                        <div class="flex gap-1.5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                        </div>
+                    </div>
+                    <div class="p-6 overflow-x-auto font-mono text-xs md:text-sm text-slate-300 leading-relaxed bg-black/40 flex-grow">
+<pre>
+0x2AD0B: Form FormId: 0x2710, Title: "Setup"
+0x2AD11:   Ref Prompt: "Main", FormId: 0x2711 <span class="text-green-500">// VISIBLE</span>
+
+<span class="text-slate-500">; The Advanced Tab Logic</span>
+0x2AD20:   SuppressIf {0A 82}
+0x2AD22:     <span class="text-fuchsia-500 font-bold">True {46 02}</span>   <span class="text-slate-500">&lt;-- HARDCODED TRUE</span>
+0x2AD24:     Ref Prompt: "Advanced", FormId: 0x2712
+0x2AD33:   End {29 02}
+
+<span class="text-slate-500">; The Chipset Tab Logic</span>
+0x2AD35:   SuppressIf {0A 82}
+0x2AD37:     <span class="text-fuchsia-500 font-bold">True {46 02}</span>   <span class="text-slate-500">&lt;-- HARDCODED TRUE</span>
+0x2AD39:     Ref Prompt: "Chipset", FormId: 0x2713
+0x2AD48:   End {29 02}<span class="cursor-blink"></span>
+</pre>
+                    </div>
+                </div>
+
+                <!-- Explanation Panel -->
+                <div class="space-y-6">
+                    <div class="glass-panel p-6 rounded-xl">
+                        <h3 class="text-lg font-bold text-white mb-2 text-violet-300">The "Hardcoded" Trap</h3>
+                        <p class="text-slate-400 text-sm">
+                            The suppression opcode <code>0A 82</code> is immediately followed by <code>46 02</code> (True). 
+                            This means the condition to hide the menu is <strong>always true</strong>. It does not check 
+                            NVRAM variables like <code>SystemAccess</code> or <code>DynamicPageCount</code>.
+                        </p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-xl">
+                        <h3 class="text-lg font-bold text-white mb-4 text-violet-300">Required Binary Patch</h3>
+                        <div class="font-mono text-xs space-y-3">
+                            <div class="flex justify-between border-b border-slate-700/50 pb-2">
+                                <span class="text-slate-500">Location</span>
+                                <span class="text-violet-400">0x2AD22</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-700/50 pb-2">
+                                <span class="text-slate-500">Pattern</span>
+                                <span class="text-yellow-500/80">0A 82 46 02 0F 0F 1E 00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Patch (True -> False)</span>
+                                <span class="text-green-400">46 -> 47</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phantom Variables -->
+            <div class="glass-panel rounded-xl p-8">
+                <h3 class="text-xl font-bold text-white mb-4">Phantom Variables</h3>
+                <p class="text-slate-400 mb-6 max-w-2xl">
+                    Documentation hinted at variables like <code>HpDynamicPageCount</code>. 
+                    However, dumps revealed these variables exist in the IFR definition but are <strong>never initialized</strong> in NVRAM.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-black/40 p-4 rounded border border-slate-800">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">Target GUID</div>
+                        <div class="font-mono text-violet-400 break-all text-xs my-2">B63BF800-F267-4F55-9217-E97FB3B69846</div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-300 text-sm">DynamicPageCount</span>
+                            <span class="text-xs text-red-500 font-bold bg-red-900/10 px-2 py-1 rounded">NOT FOUND</span>
+                        </div>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded border border-slate-800">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">Target GUID</div>
+                        <div class="font-mono text-violet-400 break-all text-xs my-2">0EE72C08-8185-427A-A58A-855B78B7BA0B</div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-slate-300 text-sm">HpDynamicPageCount</span>
+                            <span class="text-xs text-red-500 font-bold bg-red-900/10 px-2 py-1 rounded">NOT FOUND</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Variable Map -->
+        <section class="reveal">
+            <h2 class="text-3xl font-bold text-white mb-8">Variable Map & Offsets</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-black/60 text-slate-500">
+                            <tr>
+                                <th class="px-4 py-3">Variable</th>
+                                <th class="px-4 py-3">Store</th>
+                                <th class="px-4 py-3">Offset</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                            <tr><td class="px-4 py-2">CFG Lock</td><td class="px-4 py-2 text-slate-500">CpuSetup (0x11)</td><td class="px-4 py-2 text-violet-400">0x3E</td></tr>
+                            <tr><td class="px-4 py-2">Overclock Lock</td><td class="px-4 py-2 text-slate-500">CpuSetup (0x11)</td><td class="px-4 py-2 text-violet-400">0xDA</td></tr>
+                            <tr><td class="px-4 py-2">BIOS Guard</td><td class="px-4 py-2 text-slate-500">CpuSetup (0x11)</td><td class="px-4 py-2 text-violet-400">0xDB</td></tr>
+                            <tr><td class="px-4 py-2">OC Performance</td><td class="px-4 py-2 text-slate-500">CpuSetup (0x11)</td><td class="px-4 py-2 text-violet-400">0x1B7</td></tr>
+                            <tr><td class="px-4 py-2">BIOS Lock</td><td class="px-4 py-2 text-slate-500">PchSetup (0x17)</td><td class="px-4 py-2 text-violet-400">0x17</td></tr>
+                            <tr><td class="px-4 py-2">FPRR</td><td class="px-4 py-2 text-slate-500">PchSetup (0x17)</td><td class="px-4 py-2 text-violet-400">0x6DD</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="glass-panel rounded-xl p-6 flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-white mb-4">HP OEM Variables</h3>
+                    <p class="text-xs text-slate-500 mb-4 font-mono">GUID: 0EE72C08-8185-427A-A58A-855B78B7BA0B</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 bg-black/50 border border-slate-700 rounded text-xs text-slate-400 font-mono">OEMDeviceStatus</span>
+                        <span class="px-2 py-1 bg-black/50 border border-slate-700 rounded text-xs text-slate-400 font-mono">HideFccId</span>
+                        <span class="px-2 py-1 bg-black/50 border border-slate-700 rounded text-xs text-slate-400 font-mono">NewSystemFamily</span>
+                        <span class="px-2 py-1 bg-black/50 border border-slate-700 rounded text-xs text-slate-400 font-mono">DisableSGX</span>
+                        <span class="px-2 py-1 bg-black/50 border border-slate-700 rounded text-xs text-slate-400 font-mono">MPMUnlock</span>
+                        <span class="px-2 py-1 bg-black/50 border border-slate-700 rounded text-xs text-slate-400 font-mono">PendingAction</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error 167 -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+            <div class="col-span-2 glass-panel rounded-xl overflow-hidden flex flex-col">
+                <div class="bg-black/60 px-4 py-2 border-b border-slate-800">
+                    <span class="text-xs font-mono text-slate-500">PowerShell - FPTw64.exe</span>
+                </div>
+                <div class="p-6 font-mono text-xs md:text-sm text-slate-300 space-y-3 bg-black/40 flex-grow">
+                    <p>> fptw64.exe -bios -f backup.bin</p>
+                    <p class="text-slate-500">... Reading HSFSTS register... Flash Descriptor: Valid</p>
+                    <div class="py-2">
+                        <p>FPRval 0x870FF848</p>
+                        <p>BIOS space write protection is <span class="text-green-400">Disabled</span></p>
+                        <p>Flash protection range is <span class="text-red-400">Enabled</span></p>
+                    </div>
+                    <div class="bg-red-900/20 border-l-2 border-red-500 p-3 text-red-200">
+                        Error 167: Protected Range Registers are currently set by BIOS, preventing flash access.<br>
+                        Please contact the target system BIOS vendor.
+                    </div>
+                    <p class="text-red-400">> FPT Operation Failed.<span class="cursor-blink"></span></p>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl flex flex-col justify-center text-center">
+                <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                    <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <h3 class="font-bold text-white mb-2">Protection Wall</h3>
+                <p class="text-sm text-slate-400">
+                    Hardware registers (PRR) are set by the firmware initialization code <strong>before</strong> NVRAM is read. Variable edits are ignored by the hardware.
+                </p>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section id="gallery" class="reveal">
+            <h2 class="text-3xl font-bold text-white mb-8">Evidence Log</h2>
+            <!-- Image lazy loading and async decoding -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_Xtu_FIVR/XTU.png" alt="Intel XTU" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_Xtu_FIVR/throttlestop-FIVR.png" alt="ThrottleStop" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_RU/20251222013103.bmp" alt="RU.EFI" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_RU/20251222013119.bmp" alt="RU.EFI" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                 <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_RU/20251222013141.bmp" alt="RU.EFI" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_RU/20251222013159.bmp" alt="RU.EFI" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_RU/20251222013244.bmp" alt="RU.EFI" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+                <div class="aspect-video glass-panel rounded overflow-hidden group hover:border-violet-500/50 transition-all cursor-pointer relative">
+                    <img src="./Screenshot_RU/20251222013300.bmp" alt="RU.EFI" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity gallery-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion" class="glass-panel rounded-xl p-8 md:p-12 border-t-2 border-t-violet-500 reveal">
+            <h2 class="text-3xl font-bold text-white mb-8">TL;DR & Conclusion</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="md:col-span-2 space-y-4 text-slate-300">
+                    <p>1. Extracted complete IFR dumps, confirming <strong>Advanced</strong> menus exist but are hidden via Hardcoded TRUE suppression.</p>
+                    <p>2. Identified that critical variables (DynamicPageCount) are uninitialized (do not exist in NVRAM).</p>
+                    <p>3. Mapped all relevant VarStores. Confirmed CFG Lock and Overclocking Lock can be disabled via VarOffset.</p>
+                    <p>4. Attempted FPT flash. Blocked by <strong>Protected Range Registers (Error 167)</strong> which are set by initialization code, ignoring NVRAM settings.</p>
+                    <p class="text-white font-medium">Software-only unlock is impossible on this firmware version due to PRR setup sequence.</p>
+                </div>
+                <div class="flex flex-col justify-center space-y-4">
+                    <div class="text-sm font-mono text-violet-400 uppercase tracking-widest mb-2">Next Steps</div>
+                    <a href="#" class="block w-full text-center py-3 bg-slate-800 border border-slate-700 rounded text-slate-400 hover:text-white hover:border-violet-500 transition-all">
+                        Hardware Programmer
+                    </a>
+                    <a href="#" class="block w-full text-center py-3 bg-slate-800 border border-slate-700 rounded text-slate-400 hover:text-white hover:border-violet-500 transition-all">
+                        ALC 3315 Pin Mod
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Author Profile / README -->
+        <section id="author" class="reveal">
+            <div class="glass-panel rounded-xl p-8 border border-slate-700/50 relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                    <svg class="w-32 h-32 text-violet-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </div>
+
+                <div class="flex items-center gap-2 mb-6 text-slate-500 font-mono text-xs border-b border-slate-800 pb-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    README.md
+                </div>
+
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <!-- Bio Column -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-white tracking-tight mb-2">Askysoul</h2>
+                            <a href="https://github.com/Askysoul" target="_blank" class="inline-flex items-center gap-2 text-violet-400 hover:text-violet-300 transition-colors font-mono text-sm group">
+                                @Askysoul
+                                <svg class="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+                        </div>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            21 y/o developer focusing exclusively on <strong class="text-slate-200">Low-level Systems</strong> and <strong class="text-slate-200">Exploit Development</strong>. Currently dedicated to a strict 8-month intensive study of architecture and memory corruption.
+                        </p>
+                        
+                        <!-- Core Skills -->
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Core Competencies</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-start gap-3">
+                                    <span class="text-violet-500 mt-1">▹</span>
+                                    <div class="text-sm text-slate-300"><strong class="text-white block text-xs font-mono mb-0.5">ARCHITECTURE</strong> x86/x64 Assembly & Computer Org</div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-violet-500 mt-1">▹</span>
+                                    <div class="text-sm text-slate-300"><strong class="text-white block text-xs font-mono mb-0.5">LANGUAGES</strong> C (Systems) & Assembly</div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-violet-500 mt-1">▹</span>
+                                    <div class="text-sm text-slate-300"><strong class="text-white block text-xs font-mono mb-0.5">RESEARCH</strong> Binary Analysis, RE, Vulnerability Research</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roadmap Column -->
+                    <div class="lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                            <span class="text-violet-500">🗺️</span> The Roadmap
+                        </h3>
+                        
+                        <div class="space-y-8 relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-800">
+                            
+                            <!-- Phase 1 -->
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-1.5 w-4.5 h-4.5 rounded-full bg-violet-600 border-4 border-black shadow-[0_0_10px_rgba(139,92,246,0.5)] pulse-glow"></div>
+                                <div class="mb-1 flex items-center gap-3">
+                                    <h4 class="text-lg font-bold text-white">Phase 1: Foundations</h4>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-violet-900/30 text-violet-300 border border-violet-500/30">CURRENT</span>
+                                </div>
+                                <p class="text-xs font-mono text-slate-500 mb-3">Dec 2025 — July 2026</p>
+                                <p class="text-sm text-slate-300 mb-3 italic">"Building."</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-400 font-mono">
+                                    <div class="bg-black/30 px-3 py-2 rounded border border-slate-800">x86 Deep Dive -> x64</div>
+                                    <div class="bg-black/30 px-3 py-2 rounded border border-slate-800">Memory Management & Pointers</div>
+                                    <div class="bg-black/30 px-3 py-2 rounded border border-slate-800">Static/Dynamic Analysis (GDB/Ghidra)</div>
+                                    <div class="bg-black/30 px-3 py-2 rounded border border-slate-800">Buffer Overflows & ROP Chains</div>
+                                </div>
+                            </div>
+
+                            <!-- Phase 2 -->
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-1.5 w-4.5 h-4.5 rounded-full bg-slate-700 border-4 border-black"></div>
+                                <div class="mb-1 flex items-center gap-3">
+                                    <h4 class="text-lg font-bold text-slate-400">Phase 2: Advanced Development</h4>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-slate-500 border border-slate-700">UPCOMING</span>
+                                </div>
+                                <p class="text-xs font-mono text-slate-500 mb-3">Starting Aug 2026</p>
+                                <p class="text-sm text-slate-300 mb-3 italic">"Scaling."</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-500 font-mono">
+                                    <div class="bg-black/20 px-3 py-2 rounded border border-slate-800/50">C++ Object-Oriented Systems</div>
+                                    <div class="bg-black/20 px-3 py-2 rounded border border-slate-800/50">Heap Exploitation</div>
+                                    <div class="bg-black/20 px-3 py-2 rounded border border-slate-800/50">Kernel Internals</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="glass-header border-t border-slate-800 py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm font-mono">
+                RESEARCH_LOG_01 // END OF FILE <br>
+                <span class="opacity-50">Comet Lake Platform // F.31 BIOS // 2025</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to Top" class="fixed bottom-8 right-8 z-50 p-3 bg-violet-600/20 backdrop-blur-md border border-violet-500/50 rounded-full text-white hover:bg-violet-600/40 transition-all shadow-lg hover:shadow-violet-500/20" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+    </button>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 hidden" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Full size" class="max-w-full max-h-[90vh] object-contain rounded border border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+    </div>
+
+    <script>
+        // Optimization: Use a single robust observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Stop observing once revealed to save resources
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // Active Navigation Highlight & Back to Top
+        const sections = document.querySelectorAll('section, header');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        let isScrolling = false;
+
+        function onScroll() {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    
+                    // Back to Top Logic
+                    if (scrollY > 500) {
+                        if (backToTopBtn.style.opacity !== '1') {
+                            backToTopBtn.classList.add('visible');
+                            backToTopBtn.style.opacity = '1';
+                        }
+                    } else {
+                        if (backToTopBtn.style.opacity !== '0') {
+                            backToTopBtn.classList.remove('visible');
+                            backToTopBtn.style.opacity = '0';
+                        }
+                    }
+
+                    // Scrollspy Logic - simplified
+                    let current = '';
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        // Trigger point is 1/3 down the viewport
+                        if (scrollY >= (sectionTop - (window.innerHeight / 3))) {
+                            current = section.getAttribute('id');
+                        }
+                    });
+
+                    navLinks.forEach(link => {
+                        link.classList.remove('text-violet-400', 'text-glow');
+                        link.classList.add('text-slate-400');
+                        if (link.getAttribute('href') === `#${current}`) {
+                            link.classList.remove('text-slate-400');
+                            link.classList.add('text-violet-400', 'text-glow');
+                        }
+                    });
+
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const galleryImages = document.querySelectorAll('.gallery-img');
+
+        galleryImages.forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                lightboxImg.src = img.src;
+                lightbox.classList.remove('hidden');
+                // Small timeout to allow display:block to apply before opacity transition
+                setTimeout(() => {
+                    lightbox.classList.add('active');
+                }, 10);
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+            }, 200); // Match transition duration
+        }
+
+        // Mobile Menu
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+    </script>
+
+</body>
+</html>
