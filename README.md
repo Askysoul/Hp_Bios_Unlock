@@ -713,3 +713,36 @@ Options: Disabled (0x0, default), Enabled (0x1)
 **Future Goal**
 1. Pin mod (REALTEK - ALC 3315)
 2. Programmer flash
+
+
+**Screenshots**
+ #### xtu
+![xtu](Screenshot_Xtu_FIVR/XTU.png)
+
+ #### fivr
+ ![fivr](Screenshot_Xtu_FIVR/throttlestop-FIVR.png)
+
+ #### RU.EFI
+ ![1](Screenshot_RU/20251222013103.bmp)
+
+ ![2](Screenshot_RU/20251222013119.bmp)
+
+ ![3](Screenshot_RU/20251222013141.bmp)
+
+ ![4](Screenshot_RU/20251222013159.bmp)
+
+ ![5](Screenshot_RU/20251222013244.bmp)
+
+ ![6](Screenshot_RU/20251222013300.bmp)
+
+ ![7](Screenshot_RU/20251222013322.bmp)
+
+ ![8](Screenshot_RU/20251222013356.bmp)
+
+ ![9](Screenshot_RU/20251222013410.bmp)
+ 
+ ![10](Screenshot_RU/20251222013421.bmp)
+
+ ![11](Screenshot_RU/20251222013434.bmp)
+
+ ![12](Screenshot_RU/20251222013518.bmp)
