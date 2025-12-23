@@ -75,6 +75,14 @@
             perspective: 1000px;
         }
 
+        @media (min-width: 768px) {
+            .glass-header {
+                background: rgba(5, 5, 8, 0.8);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+        }
+
         .glass-panel:hover {
             border-color: rgba(139, 92, 246, 0.5);
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.15), inset 0 0 20px rgba(139, 92, 246, 0.05);
