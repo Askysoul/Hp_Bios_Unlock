@@ -63,10 +63,16 @@
         }
         
         .glass-header {
-            background: rgba(5, 5, 8, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            height: 80px;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            perspective: 1000px;
         }
 
         .glass-panel:hover {
