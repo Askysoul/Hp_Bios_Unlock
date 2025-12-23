@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -54,7 +55,6 @@
             -webkit-backdrop-filter: blur(16px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            overflow: hidden;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
         
@@ -143,8 +143,8 @@
             pointer-events: auto;
         }
         #lightbox img {
-            max-width: 85%;
-            max-height: 85vh;
+            max-width: 95%;
+            max-height: 80vh;
             border-radius: 4px;
             box-shadow: 0 0 50px rgba(139, 92, 246, 0.2);
             transform: scale(0.95);
@@ -187,6 +187,7 @@
             #lb-prev { left: 1rem; width: 2.5rem; height: 2.5rem; }
             #lb-next { right: 1rem; width: 2.5rem; height: 2.5rem; }
             .lightbox-nav svg { width: 1.25rem; height: 1.25rem; }
+            #lightbox { padding: 1rem; }
         }
         
         .gallery-item {
@@ -307,10 +308,10 @@
         </div>
     </nav>
 
-    <main class="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-32">
+    <main class="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16 md:space-y-32">
 
-        <header id="status" class="text-center py-20 reveal relative">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+        <header id="status" class="text-center py-10 md:py-20 reveal relative">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-violet-600/20 rounded-full blur-[80px] md:blur-[120px] -z-10 pointer-events-none"></div>
             
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/5 border border-green-500/20 text-green-400 text-xs font-mono mb-8 backdrop-blur-md">
                 <span class="relative flex h-2 w-2">
@@ -320,8 +321,8 @@
                 STATUS: UNLOCKED via SMOKELESS RUNTIME PATCHER
             </div>
             
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">
-                <span class="block text-xl md:text-2xl font-mono font-normal text-violet-400 mb-4 tracking-wider opacity-90">research_log_02 //</span>
+            <h1 class="text-3xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">
+                <span class="block text-lg md:text-2xl font-mono font-normal text-violet-400 mb-4 tracking-wider opacity-90">research_log_02 //</span>
                 HP Pavilion <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-500 to-violet-400 animate-gradient-x textGlow glitch-hover" style="background-size: 200% auto;">BIOS Unlock</span>
             </h1>
 
@@ -336,32 +337,32 @@
                 }
             </style>
             
-            <p class="mt-8 max-w-2xl mx-auto text-xl text-slate-400 leading-relaxed font-light">
+            <p class="mt-8 max-w-2xl mx-auto text-lg md:text-xl text-slate-400 leading-relaxed font-light">
                 FK'ed up Security. Use RunTime Patch <strong class="text-slate-200 font-medium">S.R.E.P</strong>.
             </p>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-16">
-                <div class="glass-panel p-6 rounded-xl text-center group hover:border-green-500/40 transition-all duration-300">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mt-12 md:mt-16">
+                <div class="glass-panel p-4 md:p-6 rounded-xl text-center group hover:border-green-500/40 transition-all duration-300">
                     <div class="text-[10px] text-slate-500 uppercase font-mono mb-2 group-hover:text-green-400 transition-colors">Method</div>
-                    <div class="text-green-400 font-bold text-lg font-mono tracking-tight">S.R.E.P</div>
+                    <div class="text-green-400 font-bold text-base md:text-lg font-mono tracking-tight">S.R.E.P</div>
                 </div>
-                <div class="glass-panel p-6 rounded-xl text-center group hover:border-violet-500/40 transition-all duration-300">
+                <div class="glass-panel p-4 md:p-6 rounded-xl text-center group hover:border-violet-500/40 transition-all duration-300">
                     <div class="text-[10px] text-slate-500 uppercase font-mono mb-2 group-hover:text-violet-400 transition-colors">Target</div>
-                    <div class="text-slate-200 font-bold text-lg font-mono tracking-tight">Advanced Menu</div>
+                    <div class="text-slate-200 font-bold text-base md:text-lg font-mono tracking-tight">Advanced Menu</div>
                 </div>
-                <div class="glass-panel p-6 rounded-xl text-center group hover:border-violet-500/40 transition-all duration-300">
+                <div class="glass-panel p-4 md:p-6 rounded-xl text-center group hover:border-violet-500/40 transition-all duration-300">
                     <div class="text-[10px] text-slate-500 uppercase font-mono mb-2 group-hover:text-violet-400 transition-colors">Platform</div>
-                    <div class="text-slate-200 font-bold text-lg font-mono tracking-tight">Comet Lake</div>
+                    <div class="text-slate-200 font-bold text-base md:text-lg font-mono tracking-tight">Comet Lake</div>
                 </div>
-                <div class="glass-panel p-6 rounded-xl text-center group border-red-500/20 hover:border-red-500/40 transition-all duration-300">
+                <div class="glass-panel p-4 md:p-6 rounded-xl text-center group border-red-500/20 hover:border-red-500/40 transition-all duration-300">
                     <div class="text-[10px] text-slate-500 uppercase font-mono mb-2 text-red-400">FPT Write</div>
-                    <div class="text-red-400 font-bold text-lg font-mono tracking-tight">Blocked (PRR)</div>
+                    <div class="text-red-400 font-bold text-base md:text-lg font-mono tracking-tight">Blocked (PRR)</div>
                 </div>
             </div>
 
-            <div class="mt-12 flex flex-col sm:flex-row justify-center gap-6">
+            <div class="mt-12 flex flex-col sm:flex-row justify-center gap-4 md:gap-6">
                 <a href="#solution" class="group relative px-8 py-3 bg-green-600/10 border border-green-500/30 text-green-300 rounded overflow-hidden font-mono text-sm transition-all hover:bg-green-600/20 hover:border-green-500/50 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]">
-                    <span class="relative z-10 flex items-center gap-2">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
                         VIEW_SOLUTION
                         <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </span>
@@ -373,34 +374,34 @@
         </header>
 
         <section id="specs" class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal">
-            <div class="glass-panel rounded-2xl p-8 hover:border-violet-500/40">
+            <div class="glass-panel rounded-2xl p-4 md:p-8 hover:border-violet-500/40 overflow-hidden">
                 <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3 font-mono">
                     <span class="flex items-center justify-center w-8 h-8 rounded bg-violet-500/20 text-violet-400 text-sm">01</span> TARGET_SYSTEM
                 </h3>
-                <div class="overflow-hidden rounded-lg border border-slate-700/50">
-                    <table class="w-full text-left text-sm text-slate-400">
+                <div class="overflow-x-auto rounded-lg border border-slate-700/50">
+                    <table class="w-full text-left text-sm text-slate-400 min-w-[300px]">
                         <tbody class="divide-y divide-slate-800/50 bg-black/40">
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">Model</td><td class="px-6 py-4 text-violet-300 font-bold">HP Pavilion 16 (Not Omen)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">Platform</td><td class="px-6 py-4">Intel Comet Lake (LPC: 68D)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">Flash Chip</td><td class="px-6 py-4">GigaDevice GD25B128C (16MB)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">Chip ID</td><td class="px-6 py-4 font-mono text-violet-400">0xC84018</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">BIOS Type</td><td class="px-6 py-4">AMI Aptio V UEFI (HP Custom)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">ME Version</td><td class="px-6 py-4">14.1, Build 2287, Hot Fix 72</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">BIOS Revision</td><td class="px-6 py-4">F.31</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">Boot Guard</td><td class="px-6 py-4 text-yellow-500">Enabled (per HWiNFO)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 font-medium text-slate-200">HP Sure Start</td><td class="px-6 py-4 text-green-400">Not Present</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">Model</td><td class="px-4 md:px-6 py-4 text-violet-300 font-bold">HP Pavilion 16 (Not Omen)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">Platform</td><td class="px-4 md:px-6 py-4">Intel Comet Lake (LPC: 68D)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">Flash Chip</td><td class="px-4 md:px-6 py-4">GigaDevice GD25B128C (16MB)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">Chip ID</td><td class="px-4 md:px-6 py-4 font-mono text-violet-400">0xC84018</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">BIOS Type</td><td class="px-4 md:px-6 py-4">AMI Aptio V UEFI (HP Custom)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">ME Version</td><td class="px-4 md:px-6 py-4">14.1, Build 2287, Hot Fix 72</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">BIOS Revision</td><td class="px-4 md:px-6 py-4">F.31</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">Boot Guard</td><td class="px-4 md:px-6 py-4 text-yellow-500">Enabled (per HWiNFO)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 font-medium text-slate-200">HP Sure Start</td><td class="px-4 md:px-6 py-4 text-green-400">Not Present</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="glass-panel rounded-2xl p-8 hover:border-violet-500/40 flex flex-col justify-between">
+            <div class="glass-panel rounded-2xl p-4 md:p-8 hover:border-violet-500/40 flex flex-col justify-between">
                 <div>
                     <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3 font-mono">
                         <span class="flex items-center justify-center w-8 h-8 rounded bg-violet-500/20 text-violet-400 text-sm">02</span> PRIMARY_OBJECTIVE
                     </h3>
                     <p class="text-slate-300 mb-8 leading-relaxed">Unhide <strong class="text-white">Advanced</strong> and <strong class="text-white">Chipset</strong> tabs to access critical tuning parameters.</p>
-                    <div class="grid grid-cols-2 gap-3 text-xs font-mono text-slate-400">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-slate-400">
                         <div class="bg-black/40 p-3 rounded border border-slate-800 flex items-center gap-2"><span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>CPU Configuration</div>
                         <div class="bg-black/40 p-3 rounded border border-slate-800 flex items-center gap-2"><span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Thermal Config</div>
                         <div class="bg-black/40 p-3 rounded border border-slate-800 flex items-center gap-2"><span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>Memory Timings</div>
@@ -421,7 +422,7 @@
         </section>
 
         <section class="reveal">
-            <div class="glass-panel rounded-xl p-6 relative overflow-hidden">
+            <div class="glass-panel rounded-xl p-4 md:p-6 relative overflow-hidden">
                 <div class="absolute right-0 top-0 p-3 opacity-10">
                     <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
                 </div>
@@ -441,34 +442,34 @@
         </section>
 
         <section id="mods" class="reveal">
-            <h2 class="text-3xl font-bold text-white mb-8 tracking-tight flex items-center gap-3">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-8 tracking-tight flex items-center gap-3">
                 Modification Log <span class="text-sm font-normal font-mono text-slate-500 mt-2">v.1.0</span>
             </h2>
             <div class="glass-panel rounded-xl overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm min-w-[600px]">
                         <thead class="bg-black/60 text-slate-400 uppercase text-xs font-bold tracking-wider">
                             <tr>
-                                <th class="px-6 py-5 font-mono">Setting</th>
-                                <th class="px-6 py-5 font-mono">VarStore</th>
-                                <th class="px-6 py-5 font-mono">Offset</th>
-                                <th class="px-6 py-5 font-mono">Outcome</th>
+                                <th class="px-4 md:px-6 py-5 font-mono">Setting</th>
+                                <th class="px-4 md:px-6 py-5 font-mono">VarStore</th>
+                                <th class="px-4 md:px-6 py-5 font-mono">Offset</th>
+                                <th class="px-4 md:px-6 py-5 font-mono">Outcome</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-800/50 text-slate-300 font-mono text-xs">
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 text-white">CFG Lock</td><td class="px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-6 py-4 text-violet-400">0x3E</td><td class="px-6 py-4 text-green-400">✓ Disabled (Persists)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 text-white">Overclocking Lock</td><td class="px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-6 py-4 text-violet-400">0xDA</td><td class="px-6 py-4 text-green-400">✓ Disabled (Persists)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 text-white">OC Performance Menu</td><td class="px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-6 py-4 text-violet-400">0x1B7</td><td class="px-6 py-4 text-green-400">✓ Enabled (Persists)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4 text-white">RTC Memory Lock</td><td class="px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-6 py-4 text-violet-400">0x16</td><td class="px-6 py-4 text-green-400">✓ Disabled (Persists)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">BIOS Guard</td><td class="px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-6 py-4 text-violet-400">0xDB</td><td class="px-6 py-4 text-slate-500">Off by Default</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">BIOS Lock</td><td class="px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-6 py-4 text-violet-400">0x17</td><td class="px-6 py-4 text-yellow-500">Persists (Ignored by HW)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">FPRR Protection</td><td class="px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-6 py-4 text-violet-400">0x6DD</td><td class="px-6 py-4 text-yellow-500">Persists (Ignored by HW)</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">SPD Write Disable</td><td class="px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-6 py-4 text-violet-400">0x6DB</td><td class="px-6 py-4 text-green-400">✓ Enabled</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">ME State</td><td class="px-6 py-4 text-slate-500">MeSetupStorage (0x19)</td><td class="px-6 py-4 text-violet-400">0x2</td><td class="px-6 py-4 text-yellow-500">Set to Disabled</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">ME FW Image Reflash</td><td class="px-6 py-4 text-slate-500">MeSetup (0x18)</td><td class="px-6 py-4 text-violet-400">0x5</td><td class="px-6 py-4 text-red-400">✗ Reverts on Reboot</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">SystemAccess</td><td class="px-6 py-4 text-slate-500">SystemAccess (0x4)</td><td class="px-6 py-4 text-violet-400">0x0</td><td class="px-6 py-4 text-red-400">✗ Reverts on Reboot</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">Advanced Settings</td><td class="px-6 py-4 text-slate-500">Setup (0x1)</td><td class="px-6 py-4 text-violet-400">0x443</td><td class="px-6 py-4 text-green-400">✓ Persists</td></tr>
-                            <tr class="hover:bg-white/5 transition-colors"><td class="px-6 py-4">SPI Controller (PRR)</td><td class="px-6 py-4 text-slate-500">PCI 00:1F:05</td><td class="px-6 py-4 text-violet-400">0xDC</td><td class="px-6 py-4 text-red-500 font-bold">Write Protected (0x88)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 text-white">CFG Lock</td><td class="px-4 md:px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x3E</td><td class="px-4 md:px-6 py-4 text-green-400">✓ Disabled (Persists)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 text-white">Overclocking Lock</td><td class="px-4 md:px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-4 md:px-6 py-4 text-violet-400">0xDA</td><td class="px-4 md:px-6 py-4 text-green-400">✓ Disabled (Persists)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 text-white">OC Performance Menu</td><td class="px-4 md:px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x1B7</td><td class="px-4 md:px-6 py-4 text-green-400">✓ Enabled (Persists)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4 text-white">RTC Memory Lock</td><td class="px-4 md:px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x16</td><td class="px-4 md:px-6 py-4 text-green-400">✓ Disabled (Persists)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">BIOS Guard</td><td class="px-4 md:px-6 py-4 text-slate-500">CpuSetup (0x11)</td><td class="px-4 md:px-6 py-4 text-violet-400">0xDB</td><td class="px-4 md:px-6 py-4 text-slate-500">Off by Default</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">BIOS Lock</td><td class="px-4 md:px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x17</td><td class="px-4 md:px-6 py-4 text-yellow-500">Persists (Ignored by HW)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">FPRR Protection</td><td class="px-4 md:px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x6DD</td><td class="px-4 md:px-6 py-4 text-yellow-500">Persists (Ignored by HW)</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">SPD Write Disable</td><td class="px-4 md:px-6 py-4 text-slate-500">PchSetup (0x17)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x6DB</td><td class="px-4 md:px-6 py-4 text-green-400">✓ Enabled</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">ME State</td><td class="px-4 md:px-6 py-4 text-slate-500">MeSetupStorage (0x19)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x2</td><td class="px-4 md:px-6 py-4 text-yellow-500">Set to Disabled</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">ME FW Image Reflash</td><td class="px-4 md:px-6 py-4 text-slate-500">MeSetup (0x18)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x5</td><td class="px-4 md:px-6 py-4 text-red-400">✗ Reverts on Reboot</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">SystemAccess</td><td class="px-4 md:px-6 py-4 text-slate-500">SystemAccess (0x4)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x0</td><td class="px-4 md:px-6 py-4 text-red-400">✗ Reverts on Reboot</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">Advanced Settings</td><td class="px-4 md:px-6 py-4 text-slate-500">Setup (0x1)</td><td class="px-4 md:px-6 py-4 text-violet-400">0x443</td><td class="px-4 md:px-6 py-4 text-green-400">✓ Persists</td></tr>
+                            <tr class="hover:bg-white/5 transition-colors"><td class="px-4 md:px-6 py-4">SPI Controller (PRR)</td><td class="px-4 md:px-6 py-4 text-slate-500">PCI 00:1F:05</td><td class="px-4 md:px-6 py-4 text-violet-400">0xDC</td><td class="px-4 md:px-6 py-4 text-red-500 font-bold">Write Protected (0x88)</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -476,31 +477,33 @@
         </section>
 
         <section class="reveal">
-            <h2 class="text-3xl font-bold text-white mb-8">VarStore Reference</h2>
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">VarStore Reference</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="glass-panel rounded-xl overflow-hidden h-full">
                     <div class="bg-black/60 px-6 py-4 border-b border-slate-800">
                         <h3 class="text-sm font-bold text-white font-mono">Primary VarStores</h3>
                     </div>
-                    <table class="w-full text-left text-xs font-mono">
-                        <thead class="bg-black/40 text-slate-500">
-                            <tr>
-                                <th class="px-4 py-3">ID</th>
-                                <th class="px-4 py-3">Name</th>
-                                <th class="px-4 py-3">Size</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800/50 text-slate-300">
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x1</td><td class="px-4 py-2">Setup</td><td class="px-4 py-2 text-slate-500">0x179C</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x4</td><td class="px-4 py-2">SystemAccess</td><td class="px-4 py-2 text-slate-500">0x1</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x11</td><td class="px-4 py-2">CpuSetup</td><td class="px-4 py-2 text-slate-500">0x2B0</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x14</td><td class="px-4 py-2">CpuSmm</td><td class="px-4 py-2 text-slate-500">0x7</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x16</td><td class="px-4 py-2">SaSetup</td><td class="px-4 py-2 text-slate-500">0x21C</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x17</td><td class="px-4 py-2">PchSetup</td><td class="px-4 py-2 text-slate-500">0x6EC</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x18</td><td class="px-4 py-2">MeSetup</td><td class="px-4 py-2 text-slate-500">0x2E</td></tr>
-                            <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x19</td><td class="px-4 py-2">MeSetupStorage</td><td class="px-4 py-2 text-slate-500">-</td></tr>
-                        </tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs font-mono min-w-[300px]">
+                            <thead class="bg-black/40 text-slate-500">
+                                <tr>
+                                    <th class="px-4 py-3">ID</th>
+                                    <th class="px-4 py-3">Name</th>
+                                    <th class="px-4 py-3">Size</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x1</td><td class="px-4 py-2">Setup</td><td class="px-4 py-2 text-slate-500">0x179C</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x4</td><td class="px-4 py-2">SystemAccess</td><td class="px-4 py-2 text-slate-500">0x1</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x11</td><td class="px-4 py-2">CpuSetup</td><td class="px-4 py-2 text-slate-500">0x2B0</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x14</td><td class="px-4 py-2">CpuSmm</td><td class="px-4 py-2 text-slate-500">0x7</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x16</td><td class="px-4 py-2">SaSetup</td><td class="px-4 py-2 text-slate-500">0x21C</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x17</td><td class="px-4 py-2">PchSetup</td><td class="px-4 py-2 text-slate-500">0x6EC</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x18</td><td class="px-4 py-2">MeSetup</td><td class="px-4 py-2 text-slate-500">0x2E</td></tr>
+                                <tr class="hover:bg-white/5"><td class="px-4 py-2 text-violet-400">0x19</td><td class="px-4 py-2">MeSetupStorage</td><td class="px-4 py-2 text-slate-500">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 <div class="glass-panel rounded-xl p-6 flex flex-col h-full">
@@ -538,9 +541,9 @@
 
         <section id="analysis" class="space-y-12 reveal">
             <div>
-                <h2 class="text-3xl font-bold text-white mb-6">Deep Dive Analysis</h2>
-                <div class="glass-panel rounded-xl p-8 border-l-4 border-l-violet-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <p class="text-slate-300 text-lg leading-relaxed max-w-3xl">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6">Deep Dive Analysis</h2>
+                <div class="glass-panel rounded-xl p-6 md:p-8 border-l-4 border-l-violet-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <p class="text-slate-300 text-base md:text-lg leading-relaxed max-w-3xl">
                         Analysis of IFR reveales why edits failed. HP suckers uses <strong class="text-white">hardcoded suppression opcodes</strong> rather than variable checks for top-level menus.
                     </p>
                     <a href="./IFR_variables_HWinfo/Section_PE32_image_Setup_Setup.sct.0.0.en-US.uefi.ifr.txt" target="_blank" class="shrink-0 px-4 py-2 bg-violet-600/10 border border-violet-500/30 hover:bg-violet-600/20 text-violet-200 rounded font-mono text-xs transition-all flex items-center gap-2 group hover:scale-105">
@@ -636,7 +639,7 @@
                         <h3 class="text-sm font-bold text-white font-mono">FPT_DUMP</h3>
                             <span class="text-[10px] font-mono text-green-400 border border-green-500/30 px-2 py-0.5 rounded bg-green-500/10">SUCCESS</span>
                     </div>
-                    <div class="p-4 font-mono text-[10px] text-slate-400 bg-black/50 flex-grow">
+                    <div class="p-4 font-mono text-[10px] text-slate-400 bg-black/50 flex-grow overflow-x-auto">
 <pre class="text-slate-300 bg-transparent border-none p-0">
  --- Flash Devices Found ---
     GD25B128C    ID:0xC84018    Size: 16384KB (131072Kb)
@@ -699,14 +702,14 @@ Protected Range Registers.
                    <h2 class="text-2xl font-bold text-white">Research: The BBUpdate Vector</h2>
             </div>
 
-            <div class="glass-panel p-8 rounded-xl border-l-2 border-l-violet-500">
+            <div class="glass-panel p-6 md:p-8 rounded-xl border-l-2 border-l-violet-500">
                 <div class="flex flex-col md:flex-row gap-8">
                         <div class="flex-1 space-y-4">
                         <h3 class="text-lg font-bold text-white">The HP_BBUpdate Anomaly</h3>
                         <p class="text-slate-300 text-sm leading-relaxed">
                             Forum findings (<a href="https://winraid.level1techs.com/t/tips-hp-omen-series-laptop-bios-mod/96409/3" target="_blank" class="text-violet-400 hover:text-violet-300 underline">WinRaid/Level1Techs</a>) pointed to <code class="text-violet-300">hp_bbupdate</code> as a potential exploit vector. Analysis of the firmware dump confirmed duplicate GUIDs — a quirk shared with vulnerable HP Omen series laptops.
                         </p>
-                        <div class="bg-black/30 p-4 rounded border border-white/5 font-mono text-[10px] text-slate-400 space-y-1">
+                        <div class="bg-black/30 p-4 rounded border border-white/5 font-mono text-[10px] text-slate-400 space-y-1 overflow-x-auto">
                             <p><span class="text-violet-400">GUID:</span> 5C0203AC-5118-4952-9AAE-614AAE683FD4</p>
                             <p class="text-slate-500 pl-4">→ hp_bbupdate_loader (PEI Module)</p>
                             <p><span class="text-violet-400">GUID:</span> 94F994D5-4F3D-4FA6-BDA1-D398C3B0BB8F</p>
@@ -744,8 +747,8 @@ Protected Range Registers.
              <div class="relative overflow-hidden rounded-2xl glass-panel border border-green-500/30">
                 <div class="absolute top-0 right-0 w-96 h-96 bg-green-500/10 blur-[120px] pointer-events-none"></div>
 
-                    <div class="p-8 md:p-12 relative z-10">
-                    <div class="flex flex-col md:flex-row gap-12 items-start">
+                    <div class="p-6 md:p-12 relative z-10">
+                    <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
                         <div class="flex-1 space-y-6">
                             <h3 class="text-3xl font-bold text-white">Smokeless Runtime EFI Patcher</h3>
                             <p class="text-slate-300 leading-relaxed">
@@ -808,7 +811,7 @@ Protected Range Registers.
         </section>
 
         <section id="gallery" class="reveal">
-            <h2 class="text-3xl font-bold text-white mb-8">Evidence Log</h2>
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">Evidence Log</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="aspect-video glass-panel rounded overflow-hidden relative group cursor-pointer gallery-item gallery-img">
                     <img src="./Screenshot_Xtu_FIVR/XTU.png" alt="XTU" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-105">
@@ -852,9 +855,9 @@ Protected Range Registers.
             </div>
         </section>
 
-           <section class="glass-panel rounded-xl p-8 md:p-12 border-t-2 border-t-green-500 reveal">
-            <h2 class="text-3xl font-bold text-white mb-8">TL;DR & Conclusion</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+           <section class="glass-panel rounded-xl p-6 md:p-12 border-t-2 border-t-green-500 reveal">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">TL;DR & Conclusion</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                 <div class="md:col-span-2 space-y-4 text-slate-300 leading-relaxed">
                     <p><span class="text-green-400 font-bold">1.</span> Extracted complete IFR dump — Checked Advanced/Chipset/Security menus exist but are hidden via <strong class="text-white">hardcoded TRUE suppression</strong>.</p>
                     <p><span class="text-green-400 font-bold">2.</span> DynamicPageCount variables are <strong class="text-red-400">phantom</strong> — defined in IFR but never initialized in NVRAM.</p>
@@ -886,7 +889,7 @@ Protected Range Registers.
             </section>
 
         <section id="author" class="reveal">
-            <div class="glass-panel rounded-xl p-8 border border-slate-700/50 relative overflow-hidden">
+            <div class="glass-panel rounded-xl p-6 md:p-8 border border-slate-700/50 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                     <svg class="w-32 h-32 text-violet-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 </div>
@@ -896,7 +899,7 @@ Protected Range Registers.
                     README.md
                 </div>
 
-                      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-12">
+                      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
                     <div class="lg:col-span-1 space-y-6">
                         <div>
                             <h2 class="text-3xl font-bold text-white tracking-tight mb-2">Askysoul</h2>
