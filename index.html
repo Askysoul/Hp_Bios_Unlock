@@ -55,7 +55,11 @@
             -webkit-backdrop-filter: blur(16px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            transform: translate3d(0,0,0);
+            -webkit-transform: translate3d(0,0,0);
+            will-change: transform; 
         }
         
         .glass-header {
@@ -68,7 +72,7 @@
         .glass-panel:hover {
             border-color: rgba(139, 92, 246, 0.5);
             box-shadow: 0 0 30px rgba(139, 92, 246, 0.15), inset 0 0 20px rgba(139, 92, 246, 0.05);
-            transform: translateY(-2px);
+            transform: translateY(-2px) translate3d(0,0,0);
             background: rgba(20, 20, 28, 0.75);
         }
 
@@ -745,7 +749,7 @@ Protected Range Registers.
         </div>
 
              <div class="relative overflow-hidden rounded-2xl glass-panel border border-green-500/30">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-green-500/10 blur-[120px] pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-green-500/10 blur-[80px] md:blur-[120px] pointer-events-none"></div>
 
                     <div class="p-6 md:p-12 relative z-10">
                     <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
