@@ -713,6 +713,7 @@ Options: Disabled (0x0, default), Enabled (0x1)
 **Future Goal**
 1. Pin mod (REALTEK - ALC 3315)
 2. Programmer flash
+3. none now i go learn something else
 
 
 **Screenshots**
@@ -746,3 +747,16 @@ Options: Disabled (0x0, default), Enabled (0x1)
  ![11](Screenshot_RU/20251222013434.bmp)
 
  ![12](Screenshot_RU/20251222013518.bmp)
+
+**UPDATE**
+
+ 1. I have went ahead and somehow managed to unlock all the bios settings yes Advanced and ChipSet.
+ 2. The issue was 0x88 of spi anyways prr is still locked.
+ 3. My friend provided a Runtime EFI patch that unlocked the bios finally
+ 4. Thx to my friend and win-raid forum for help
+
+ #### updated ss
+
+ ![1](Screenshot_unlocked/IMG_20251223_114908.jpg)
+ ![2](Screenshot_unlocked/IMG_20251223_115007_1.jpg)
+
