@@ -1,0 +1,9 @@
+
+#ignore these
+setup_mod_worker.html
+bios_mod.efi
+variable_edits.txt
+*.efi
+*.bin
+*.exe
+*.nsh
